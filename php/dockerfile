@@ -51,18 +51,21 @@ COPY src/.env.example /var/www/html/.env
 WORKDIR /var/www/html
 
 # Install composer based on Laravel composer.json
-# RUN composer install
 # RUN php composer update
 # RUN php composer.phar update
-# RUN composer install
-# RUN composer update
+RUN composer install
 # RUN bash -c "composer require jenssegers/agent"
+
+RUN composer require laravel/ui
 
 # Change permission
 RUN chown -R www-data:root /var/www/html
 
+#copy env
+# RUN cp .env.example .env
+
 # Laravel generate Application Key
-# RUN php artisan key:generate
+RUN php artisan key:generate
 
 # Install composer based on Laravel composer.json, Change permission and Laravel generate Application Key
 # RUN composer install && chown -R www-data:root /var/www/html && php artisan key:generate

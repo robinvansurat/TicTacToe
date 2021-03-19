@@ -5,6 +5,10 @@ services:
   database:
     image: mariadb
     restart: always
+    ports: 
+      - 3306:3306
+    networks:
+      - network_services
     environment:
         MYSQL_USER: root
         MYSQL_PASSWORD: root
@@ -17,6 +21,8 @@ services:
     restart: always
     ports:
       - 8069:80
+    networks:
+      - network_services
     environment:
       PMA_HOST: database
 
@@ -26,17 +32,26 @@ services:
     working_dir: /var/www/html
     links:
       - database
+    networks:
+      - network_services
     volumes:
       - ./php/src:/var/www/html
       - ./php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - /var/www/html/vendor
 
   nginx:
     build: ./nginx
     working_dir: /var/www/html
     volumes_from:
       - php
+    networks:
+      - network_services
     volumes:
       - ./nginx/ssl:/etc/ssl
     ports:
       - 8009:80
       - 443:443
+
+networks:
+  network_services:
+    driver: bridge   
