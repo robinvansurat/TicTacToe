@@ -4,7 +4,7 @@ services:
   
   database:
     image: mariadb
-    restart: always
+    # restart: always
     ports: 
       - 3306:3306
     networks:
@@ -18,7 +18,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin
-    restart: always
+    # restart: always
     ports:
       - 8069:80
     networks:
@@ -27,7 +27,7 @@ services:
       PMA_HOST: database
 
   php:
-    restart: always
+    # restart: always
     build: ./php
     working_dir: /var/www/html
     links:
